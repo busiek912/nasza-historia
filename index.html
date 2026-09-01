@@ -1,0 +1,411 @@
+html_content = """<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grzesiek & Sara - Nasza Historia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0b0709;
+            color: #f3e9ec;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Tło z płatkami róż (animowane elementy) */
+        .petals {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .petal {
+            position: absolute;
+            background: rgba(220, 130, 160, 0.25);
+            border-radius: 150% 0 150% 0;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        /* Sekcja 1: Powitanie */
+        .hero {
+            background: linear-gradient(rgba(11, 7, 9, 0.5), rgba(11, 7, 9, 0.8)), url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1000&auto=format&fit=crop') no-repeat center center/cover;
+        }
+
+        .subtitle-top {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            letter-spacing: 4px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: #d1a3b5;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        h1 span {
+            color: #d86b94;
+            font-style: italic;
+        }
+
+        .quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.25rem;
+            max-width: 500px;
+            line-height: 1.6;
+            color: #dcd0d4;
+            margin-bottom: 30px;
+        }
+
+        .date {
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            color: #b099a2;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            background-color: #d86b94;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 15px rgba(216, 107, 148, 0.4);
+        }
+
+        .btn:hover {
+            background-color: #c2537c;
+            transform: scale(1.03);
+        }
+
+        /* Sekcja 2: Licznik */
+        .counter-section {
+            background-color: #0b0709;
+        }
+
+        .main-days {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 6rem;
+            color: #d86b94;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .days-label {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.5rem;
+            color: #dcd0d4;
+            margin-bottom: 40px;
+        }
+
+        .counter-grid {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .counter-box {
+            border: 1px solid rgba(216, 107, 148, 0.3);
+            border-radius: 12px;
+            padding: 20px 25px;
+            min-width: 140px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(5px);
+        }
+
+        .counter-box .number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .counter-box .label {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #b099a2;
+        }
+
+        .privacy-note {
+            font-size: 0.85rem;
+            color: #94828a;
+            font-style: italic;
+            margin-top: 15px;
+        }
+
+        .infinity-box {
+            display: inline-block;
+            border: 1px solid rgba(216, 107, 148, 0.3);
+            padding: 15px 30px;
+            border-radius: 12px;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .infinity-box .symbol {
+            font-size: 1.5rem;
+            color: #d86b94;
+            margin-bottom: 5px;
+        }
+        
+        .infinity-box .text {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #b099a2;
+        }
+
+        .scroll-hint {
+            margin-top: 30px;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #8c737f;
+        }
+
+        /* Sekcja 3: Historia */
+        .story-section {
+            background: radial-gradient(circle at center, #1a1015 0%, #0b0709 100%);
+            padding: 80px 20px;
+        }
+
+        .story-box {
+            max-width: 650px;
+            text-align: left;
+            line-height: 1.8;
+            font-weight: 300;
+            font-size: 1rem;
+            color: #e6dadf;
+        }
+
+        .story-box h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: #fff;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .story-box h2 span {
+            color: #d86b94;
+            font-style: italic;
+        }
+
+        .story-box p {
+            margin-bottom: 25px;
+        }
+
+        .story-box .highlight {
+            color: #d86b94;
+            font-style: italic;
+        }
+
+        .footer-names {
+            margin-top: 40px;
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #b099a2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .footer-names a {
+            color: #fff;
+            background: rgba(216, 107, 148, 0.2);
+            border: 1px solid rgba(216, 107, 148, 0.4);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-style: normal;
+        }
+
+        @media(max-width: 600px) {
+            h1 { font-size: 2.8rem; }
+            .main-days { font-size: 4.5rem; }
+            .counter-grid { flex-direction: column; align-items: center; }
+            .counter-box { width: 100%; max-width: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animowane spadające płatki/listki -->
+    <div class="petals" id="petals"></div>
+
+    <!-- SEKCIJA 1: POWITANIE -->
+    <section class="hero">
+        <div class="subtitle-top">Nasza Historia</div>
+        <h1>Kuba <span>&</span> Zuzia</h1>
+        <p class="quote">„Jedna kawa, jedno spojrzenie, i świat już nigdy nie był taki sam.”</p>
+        <div class="date">12 &bull; MAJA &bull; 2023</div>
+        <a href="#counter" class="btn">POZNAJ NASZĄ HISTORIĘ</a>
+    </section>
+
+    <!-- SEKCIJA 2: LICZNIK -->
+    <section class="counter-section" id="counter">
+        <div class="main-days" id="daysCount">0</div>
+        <div class="days-label">dni</div>
+
+        <div class="counter-grid">
+            <div class="counter-box">
+                <div class="number" id="hoursCount">0</div>
+                <div class="label">Godzin</div>
+            </div>
+            <div class="counter-box">
+                <div class="number" id="minutesCount">0</div>
+                <div class="label">Minut</div>
+            </div>
+        </div>
+
+        <div class="infinity-box">
+            <div class="symbol">∞</div>
+            <div class="text">Wspomnień</div>
+        </div>
+
+        <div class="privacy-note">To jej wysłałem<br>(To prywatna strona o nas 🥺)</div>
+        <div style="margin-top: 15px; font-weight: 500; font-size: 0.9rem; color: #fff;">I to dopiero początek...</div>
+        
+        <div class="scroll-hint">Przewiń ▼</div>
+    </section>
+
+    <!-- SEKCJA 3: HISTORIA -->
+    <section class="story-section">
+        <div class="story-box">
+            <div style="text-align: center; font-size: 0.8rem; letter-spacing: 3px; color: #d1a3b5; text-transform: uppercase; margin-bottom: 10px;">Rozdział Pierwszy</div>
+            <h2>Nasza <span>historia</span></h2>
+            
+            <p>Był majowy wieczór w Warszawie. Deszcz właśnie przestał padać, a światła kawiarni „Café Kula” odbijały się w mokrym chodniku.</p>
+            
+            <p>Kuba zajął ostatni wolny stolik przy oknie. Zuzia weszła kilka minut później — szukała schronienia przed kolejną ulewą.</p>
+            
+            <p>„Mogę się dosiąść?” — zapytała. Kuba skinął głową, bo słowa gdzieś uciekły. Zamówili po kawie. Pierwsza rozmowa miała trwać dziesięć minut. Trwała cztery godziny.</p>
+            
+            <p>Wyszli, gdy właściciel gasił światła. Zuzia miała mokre włosy, Kuba pożyczył jej swoją bluzę. Nie wiedzieli jeszcze, że to jest <span class="highlight">ta noc</span>, o której będą opowiadać wnukom.</p>
+            
+            <p style="text-align: center; font-style: italic; margin-top: 40px; color: #fff;">Tak zaczęła się nasza historia.</p>
+
+            <div class="footer-names">
+                <span>KUBA</span> 
+                <a href="#counter">← ZUZIA</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // --- LICZNIK CZASU ---
+        // Ustaw tutaj datę początku Waszego związku w formacie RRRR-MM-DDTHH:MM:SS
+        const startDate = new Date("2023-05-12T20:00:00");
+
+        function updateCounters() {
+            const now = new Date();
+            const diff = now - startDate;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const totalHours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff / 1000 / 60) % 60);
+                const totalMinutes = Math.floor(diff / (1000 * 60));
+
+                document.getElementById("daysCount").innerText = days.toLocaleString();
+                document.getElementById("hoursCount").innerText = totalHours.toLocaleString();
+                document.getElementById("minutesCount").innerText = totalMinutes.toLocaleString();
+            }
+        }
+
+        setInterval(updateCounters, 1000);
+        updateCounters();
+
+        // --- GENERATOR SPADAJĄCYCH PŁATKÓW ---
+        const petalsContainer = document.getElementById("petals");
+        const petalsCount = 20;
+
+        for (let i = 0; i < petalsCount; i++) {
+            const petal = document.createElement("div");
+            petal.classList.add("petal");
+            
+            // Losowe parametry płatka
+            const size = Math.random() * 10 + 8; // od 8 do 18px
+            petal.style.width = `${size}px`;
+            petal.style.height = `${size * 1.4}px`;
+            petal.style.left = `${Math.random() * 100}vw`;
+            petal.style.top = `-${Math.random() * 20}vh`;
+            
+            const duration = Math.random() * 8 + 6; // od 6 do 14 sekund
+            const delay = Math.random() * 10; // opóźnienie startu
+            
+            petal.style.animationDuration = `${duration}s`;
+            petal.style.animationDelay = `${delay}s`;
+            
+            petalsContainer.appendChild(petal);
+        }
+    </script>
+</body>
+</html>
+"""
+
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
